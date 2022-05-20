@@ -29,7 +29,17 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     msbuildArguments: '/p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true'
-    
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      CD $(Build.Repository.Name)\obj\octopacked\
+            
+      ls
+      
 - task: OctoInstaller@5
   inputs:
     version: '*'
@@ -38,5 +48,5 @@ steps:
   inputs:
     OctoConnectedServiceName: 'octopus'
     Space: 'Spaces-1'
-    Package: '$(Build.Repository.Name).$(Build.BuildId).nupkg'
+    Package: '$(Build.Repository.Name)\obj\octopacked\$(Build.Repository.Name).$(Build.BuildId).nupkg'
     Replace: 'false'
