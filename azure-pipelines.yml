@@ -3,6 +3,8 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
 trigger:
 - master
 
@@ -21,42 +23,17 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
+- task: MSBuild@1
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    solution: '**/*.sln'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    
-- task: Bash@3
-  displayName: Generate ReleaseNotes
-  inputs:
-    targetType: inline
-    script: |
-      git log -1 > ReleaseNotes.txt
+    msbuildArguments: '/p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true'
 
-- task: OctopusPack@4
-  displayName: Prepare Octopus Package
-  inputs:
-    PackageId: $(Build.Repository.Name)
-    PackageFormat: 'Zip'
-    PackageVersion: $(Build.BuildNumber)
-
-- task: OctopusPush@4
-  displayName: Upload Octopus Package
+- task: OctopusPush@5
   inputs:
     OctoConnectedServiceName: 'octopus'
     Space: 'Spaces-1'
-    Package: k8s-$(imageName).$(Build.BuildNumber)-gke.zip
+    Package: '$(Build.Repository.Name)\obj\octopacked\$(Build.Repository.Name).$(Build.BuildId).nupkg'
     Replace: 'false'
-
-- task: OctopusCreateRelease@4
-  displayName: Create Octopus Release
-  inputs:
-    OctoConnectedServiceName: 'octopus'
-    Space: 'Spaces-1'
-    ProjectGroup: 'Web'
-    ProjectName: $(Build.Repository.Name)
-    ReleaseNumber: $(Build.BuildNumber)
-    channel: $(Build.SourceBranchName)
-    AdditionalArguments: '--releaseNoteFile=ReleaseNotes.txt'
+    
