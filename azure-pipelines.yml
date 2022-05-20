@@ -19,6 +19,10 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
+- task: OctoInstaller@5
+  inputs:
+    version: '*'
+
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
@@ -43,10 +47,6 @@ steps:
       ls .\OctopusProject_Sample\bin
       
       ls .\OctopusProject_Sample\obj
-
-- task: OctoInstaller@5
-  inputs:
-    version: '*'
 
 - task: OctopusPush@5
   inputs:
