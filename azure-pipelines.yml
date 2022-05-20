@@ -29,6 +29,10 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     msbuildArguments: '/p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true'
+    
+- task: OctoInstaller@5
+  inputs:
+    version: '*'
 
 - task: OctopusPush@5
   inputs:
