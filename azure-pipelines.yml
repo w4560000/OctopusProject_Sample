@@ -39,6 +39,10 @@ steps:
       # CD $(Build.Repository.Name)\obj\octopacked\
             
       ls
+      
+      CD OctopusProject_Sample
+      
+      ls
 
 - task: OctoInstaller@5
   inputs:
