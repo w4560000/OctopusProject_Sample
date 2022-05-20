@@ -36,10 +36,10 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      CD $(Build.Repository.Name)\obj\octopacked\
+      # CD $(Build.Repository.Name)\obj\octopacked\
             
       ls
-      
+
 - task: OctoInstaller@5
   inputs:
     version: '*'
