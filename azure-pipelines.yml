@@ -38,6 +38,6 @@ steps:
   inputs:
     OctoConnectedServiceName: 'octopus'
     Space: 'Spaces-1'
-    Package: '$(Build.Repository.Name)\obj\octopacked\$(Build.Repository.Name).$(Build.BuildId).nupkg'
+    Package: '$(Build.Repository.Name).$(Build.BuildId).nupkg'
     Replace: 'false'
     
