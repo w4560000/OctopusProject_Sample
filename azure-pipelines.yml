@@ -32,7 +32,7 @@ steps:
     solution: '**/*.sln'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    msbuildArguments: '/p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true'
+    msbuildArguments: '/t:Build /p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true /fl'
 
 - task: PowerShell@2
   inputs:
