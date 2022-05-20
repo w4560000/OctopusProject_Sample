@@ -44,6 +44,10 @@ steps:
       
       ls
 
+      CD OctopusProject_Sample/bin
+      
+      ls
+
 - task: OctoInstaller@5
   inputs:
     version: '*'
