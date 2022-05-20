@@ -32,25 +32,27 @@ steps:
     solution: '**/*.sln'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    msbuildArguments: '/t:Build /p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true /fl'
+    msbuildArguments: '/t:Build /p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildNumber) /p:OctoPackEnforceAddingFiles=true'
 
-- task: PowerShell@2
+- task: Bash@3
+  displayName: Generate ReleaseNotes
   inputs:
-    targetType: 'inline'
+    targetType: inline
     script: |
-      # Write your PowerShell commands here.
-      
-      # CD $(Build.Repository.Name)\obj\octopacked\
-            
-      ls
-      
-      ls .\OctopusProject_Sample\bin
-      
-      ls .\OctopusProject_Sample\obj
-
+      git log -1 > ReleaseNotes.txt
 - task: OctopusPush@5
   inputs:
     OctoConnectedServiceName: 'octopus'
     Space: 'Spaces-1'
-    Package: '$(System.TeamProject)\obj\octopacked\$(System.TeamProject).$(Build.BuildId).nupkg'
+    Package: '$(System.TeamProject)\obj\octopacked\$(System.TeamProject).$(Build.BuildNumber).nupkg'
     Replace: 'false'
+    
+- task: OctopusCreateRelease@5
+  inputs:
+    OctoConnectedServiceName: 'octopus'
+    Space: 'Spaces-1'
+    ProjectGroup: 'Web'
+    ProjectName: '$(System.TeamProject)'
+    ReleaseNumber: '$(Build.BuildNumber)'
+    Channel: 'develop'
+    AdditionalArguments: '--releaseNoteFile=ReleaseNotes.txt'
