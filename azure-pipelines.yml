@@ -40,13 +40,9 @@ steps:
             
       ls
       
-      CD OctopusProject_Sample
+      ls .\OctopusProject_Sample\bin
       
-      ls
-
-      CD OctopusProject_Sample/bin
-      
-      ls
+      ls .\OctopusProject_Sample\obj
 
 - task: OctoInstaller@5
   inputs:
