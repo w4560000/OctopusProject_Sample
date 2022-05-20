@@ -28,16 +28,11 @@ steps:
     solution: '**/*.sln'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
+    msbuildArguments: '/p:RunOctoPack=true /p:OctoPackPackageVersion=$(Build.BuildId) /p:OctoPackEnforceAddingFiles=true'
+    
 - task: OctoInstaller@5
   inputs:
     version: '*'
-
-- task: OctopusPack@4
-  inputs:
-    PackageId: '$(Build.Repository.Name)'
-    PackageFormat: 'NuPkg'
-    PackageVersion: '$(Build.BuildNumber)'
 
 - task: OctopusPush@5
   inputs:
@@ -45,4 +40,3 @@ steps:
     Space: 'Spaces-1'
     Package: '$(Build.Repository.Name).$(Build.BuildId).nupkg'
     Replace: 'false'
-    
