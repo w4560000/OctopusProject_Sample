@@ -6,7 +6,8 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
-- master
+- qc
+- develop
 
 pool:
   vmImage: 'windows-latest'
@@ -54,5 +55,5 @@ steps:
     ProjectGroup: 'Web'
     ProjectName: '$(System.TeamProject)'
     ReleaseNumber: '$(Build.BuildNumber)'
-    Channel: 'develop'
+    Channel: '$(Build.SourceBranchName)'
     AdditionalArguments: '--releaseNoteFile=ReleaseNotes.txt'
