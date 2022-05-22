@@ -156,12 +156,18 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <Content Include="Web.develop.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.qc.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
